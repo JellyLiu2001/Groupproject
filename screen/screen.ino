@@ -1,21 +1,26 @@
+// C++ code
+//
+#include <Adafruit_LiquidCrystal.h>
 
-#include <LiquidCrystal.h>
- 
-// 初始化针脚
-const int rs = 3, en = 5, d4 = 10, d5 = 11, d6 = 12, d7 = 13;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
- 
-void setup() {
-    //设置LCD要显示的列数、行数，即2行16列
-    lcd.begin(16, 2);
- 
-    //输出Hello World
-    lcd.print("hello, world!");
+int seconds = 0;
+
+Adafruit_LiquidCrystal lcd_1(0);//i2c
+
+void setup()
+{
+  lcd_1.begin(16, 2);
+  lcd_1.setCursor(0, 1);//将屏幕选中x,y
+  lcd_1.print("hello world");打印
 }
- 
-void loop() {
-    //设置光标定位到第0列，第1行（从0开始）
-    lcd.setCursor(0, 1);
-    //打印从重置后的秒数
-    lcd.print( millis() / 1000);
+
+void loop()
+{
+  
+  lcd_1.print(seconds);
+  lcd_1.setBacklight(1);
+  delay(500); // Wait for 500 millisecond(s)
+  lcd_1.setBacklight(0);
+  delay(500); // Wait for 500 millisecond(s)
+  seconds += 1;
+  lcd_1.clear();//清除
 }
