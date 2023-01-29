@@ -1,14 +1,20 @@
+//---------gyro-----------
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
+#include <utility/imumaths.h>
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 //-----screen-----
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd_1(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-int mode=1;
+LiquidCrystal_I2C lcd_1(0x27,20,3);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 /*
+z:179-180--179
+y:1-0--1
 Led:13
 Button&motor
 Button:2:3:4:5
 Switch:6
-Motor:10:11
+Motor:9:10
 Screen:sda:scl 0x27
 Motor:20度为0 - 190
 */
@@ -38,9 +44,8 @@ int c =a+20;//舵机20为0度
 int d =b+20;
 int i;
 //测试
-int test_xdeg=21;
-int test_ydeg=10;
-int balence;
+int ydeg,zdeg;
+int y_balence,z_balence;
 //-------------给陈彦博的----------------
 int connect=1;//发送信号1代表连接成功
 int e,f;//发送旋转角度

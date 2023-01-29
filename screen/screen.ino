@@ -22,7 +22,7 @@ void setup()
 
 void loop()
 {
-  lcd_1.print("motor2: ");
+  lcd_1.print("Yang Li");
   while(1)
   {
 
