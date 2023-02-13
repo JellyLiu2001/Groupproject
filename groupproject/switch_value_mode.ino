@@ -17,7 +17,7 @@ void switch_value_mode()
     lcd_1.print("Green-information");//实时显示角度
 
 
-    if (BUTTON_VALUE_2_W == 1)//white-----------------配平---------------------
+    if (BUTTON_VALUE_2_W == 1)//white-----------------自动配平---------------------
     {
       gyro_loop();
 //led
@@ -35,8 +35,8 @@ void switch_value_mode()
       lcd_1.setCursor(0, 3);
       lcd_1.print("Need to roll ");//水平
       lcd_1.print(y_balence);
-      d=d+z_balence;//更新配平后角度
-      c=c+y_balence;
+      d=d+z_balence*2;//更新配平后角度
+      c=c+y_balence*2;//二倍后变成现实角度
       delay(1000);
       lcd_1.clear();
       lcd_1.print("Success");//显示成功
