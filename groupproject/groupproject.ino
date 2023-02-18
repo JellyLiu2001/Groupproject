@@ -8,7 +8,8 @@ void setup()  //初始化；
 }
 
 void loop() {
-  switch_value = digitalRead(SWITCH);  //读取数字针脚的值；
+  Serial.print("hi");
+  switch_value = digitalRead(SWITCH);//读取数字针脚的值；
   transfer();//定义舵机范围
   if (switch_value == LOW)  //开关是1
   {
@@ -20,5 +21,4 @@ void loop() {
   }
   servo_1.write(c);  //设置舵机旋转角度
   servo_2.write(d);  //设置舵机2旋转角度
-  
 }
