@@ -24,37 +24,39 @@ void setup()
   servo_10.attach(10, 500, 2500);
   // sweep the servo from 0 to 180 degrees in steps
   // of 1 degrees
-  for (pos = 0; pos <= 180; pos += 5)
+  for (pos = 20; pos <= 160; pos += 1)
   {
 
     // tell servo to go to position in variable 'pos'
     servo_9.write(pos);
+    delay(500);
+    sensors_event_t event; 
+    bno.getEvent(&event);
     // wait 15 ms for servo to reach the position
-    delay(15); // Wait for 15 millisecond(s)
     Serial.print(pos);
     Serial.print(",");
     //Serial.print("Y: ");
-    Serial.print("event.orientation.y");
+    Serial.print(event.orientation.y,4);
     Serial.print(",");
     //Serial.print("Z: ");
-    Serial.println("event.orientation.z");
-    delay(10);
+    Serial.println(event.orientation.z,4);
   }
-  for (pos = 180; pos >= 0; pos -= 5)
+  for (pos = 160; pos >= 20; pos -= 1)
   {
     // tell servo to go to position in variable 'pos'
     // tell servo to go to position in variable 'pos'
     servo_10.write(pos);
+    delay(500);
+    sensors_event_t event; 
+    bno.getEvent(&event);
     // wait 15 ms for servo to reach the position
-    delay(15); // Wait for 15 millisecond(s)
     Serial.print(pos);
     Serial.print(",");
     //Serial.print("Y: ");
-    Serial.print("event.orientation.y");
+    Serial.print(event.orientation.y,4);
     Serial.print(",");
     //Serial.print("Z: ");
-    Serial.println("event.orientation.z");
-    delay(10);
+    Serial.println(event.orientation.z,4);
   }
 Serial.print("finish");
 }

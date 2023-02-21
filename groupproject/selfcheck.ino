@@ -19,11 +19,11 @@ void selfcheck()
     digitalWrite(blue, 0);
     delay(led_delay);
   }
-  servo_1.write(10);  //设置舵机旋转角度
-  servo_2.write(10);  //设置舵机2旋转角度
+  servo_1.write(40);  //设置舵机旋转角度
+  servo_2.write(140);  //设置舵机2旋转角度
   delay(500);
-  servo_1.write(190);  //设置舵机旋转角度
-  servo_2.write(190);  //设置舵机2旋转角度
+  servo_1.write(140);  //设置舵机旋转角度
+  servo_2.write(40);  //设置舵机2旋转角度
   delay(500);
   lcd_1.setCursor(0, 1);  //将屏幕选中x,y
   lcd_1.print("Testing success");    //打印

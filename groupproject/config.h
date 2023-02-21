@@ -26,7 +26,7 @@ Motor:20度为0 - 190
   int pre_deg_c,current_c=0;
   int current_d,pre_deg_d=0;
   int a=70;//定义旋转角度后c,d
-  int b=120;
+  int b=70;
   Servo servo_1;//声明舵机
   Servo servo_2;//声明舵机2
   //校准舵机角度

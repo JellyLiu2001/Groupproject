@@ -26,12 +26,12 @@ void gyro_loop()
 
 //z配平-------------------
       if (zdeg>=0)
-      {z_balence=180-zdeg;}
+      {z_balence=173-zdeg;}
       else if(zdeg<0)
       {
-        z_balence=180+zdeg;
+        z_balence=173+zdeg;
       }
 //y配平-----------------------
-      y_balence=0-ydeg;
+      y_balence=2-ydeg;
 
 }
