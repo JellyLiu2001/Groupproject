@@ -1,30 +1,25 @@
-    /*
-  Character-LCD-I2C-1602
-  modified on 31 oct 2020
-  by Amir Mohammad Shojaee @ Electropeak
-  Home
+// C++ code
+//
+#include <Adafruit_LiquidCrystal.h>
 
-  based on LiquidCrystal_I2C Library Arduino Examples
-*/
+int seconds = 0;
 
-#include <Wire.h> 
-#include <LiquidCrystal_I2C.h>
-
-LiquidCrystal_I2C lcd_1(0x27,20,4);  // set the LCD address to 0x3F for a 16 chars and 2 line display
+Adafruit_LiquidCrystal lcd_1(0);
 
 void setup()
 {
-  lcd_1.init();                      // initialize the lcd 
-  lcd_1.backlight();
-  Serial.begin(9600);
- 
+  lcd_1.begin(0X27,16, 2);
+
+  lcd_1.print("hello world");
 }
 
 void loop()
 {
-  lcd_1.print("Yang Li");
-  while(1)
-  {
-
-  }
+  lcd_1.setCursor(0, 1);
+  lcd_1.print(seconds);
+  lcd_1.setBacklight(1);
+  delay(500); // Wait for 500 millisecond(s)
+  lcd_1.setBacklight(0);
+  delay(500); // Wait for 500 millisecond(s)
+  seconds += 1;
 }

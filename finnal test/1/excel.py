@@ -27,6 +27,6 @@ while 1:
             ws.cell(row=b, column=2).value=ydegree[i]
             ws.cell(row=b, column=3).value=zdegree[i]
             print("runing")
-        wb.save('1deg.xlsx')
+        wb.save('2deg.xlsx')
         print("finnish")
         break;

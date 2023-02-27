@@ -29,7 +29,7 @@ void setup()
 
     // tell servo to go to position in variable 'pos'
     servo_9.write(pos);
-    delay(500);
+    delay(200);
     sensors_event_t event; 
     bno.getEvent(&event);
     // wait 15 ms for servo to reach the position
@@ -46,7 +46,7 @@ void setup()
     // tell servo to go to position in variable 'pos'
     // tell servo to go to position in variable 'pos'
     servo_10.write(pos);
-    delay(500);
+    delay(200);
     sensors_event_t event; 
     bno.getEvent(&event);
     // wait 15 ms for servo to reach the position
