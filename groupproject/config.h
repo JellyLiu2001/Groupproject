@@ -20,6 +20,7 @@ Motor:20度为0 - 190
   #include <Wire.h> 
   #include <LiquidCrystal_I2C.h>
   LiquidCrystal_I2C lcd_1(0x27,20,3);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+  int lcd=1;
 
 //---舵机---
   #include <Servo.h>
@@ -34,22 +35,23 @@ Motor:20度为0 - 190
   int d =b+20;
   int i;
 //---led---
-  int green=13;
+  int green=11;
   int blue=12;
-  int red=11;
+  int red=13;
   int led_delay =100;
 //---按钮---
   int switch_value=0; //声明变量，用来存储按钮返回值HIGH或者LOW；
-  const int SWITCH=6;  //声明变量，开关接在第6针脚；
+  const int SWITCH=4;  //声明变量，开关接在第6针脚；
   int BUTTON_VALUE_1_B, BUTTON_VALUE_2_W, BUTTON_VALUE_3_G, BUTTON_VALUE_4_R;//声明按键状态
 //motor1
   int BUTTON1_M1_BLUE=5;//blue
-  int BUTTON2_M1_WHITE=4;//white
+  int BUTTON2_M1_WHITE=6;//white
 //motor2
-  int BUTTON1_M2_GREEN=3;//green
-  int BUTTON2_M2_RED=2;//red
+  int BUTTON1_M2_GREEN=2;//green
+  int BUTTON2_M2_RED=3;//red
 
 //配平角度
+  int pos;
   int ydeg,zdeg;
   int y_balence,z_balence;
 //-------------给陈彦博的----------------

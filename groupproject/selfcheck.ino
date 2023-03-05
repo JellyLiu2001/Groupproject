@@ -19,14 +19,32 @@ void selfcheck()
     digitalWrite(blue, 0);
     delay(led_delay);
   }
-  servo_1.write(40);  //设置舵机旋转角度
-  servo_2.write(140);  //设置舵机2旋转角度
-  delay(500);
-  servo_1.write(140);  //设置舵机旋转角度
-  servo_2.write(40);  //设置舵机2旋转角度
-  delay(500);
+  for (pos = 20; pos <= 160; pos += 1)//舵机从20-160 记录数据
+  {
+    servo_1.write(pos);
+    //delay(200);
+    sensors_event_t event; 
+    bno.getEvent(&event);
+    Serial.print(pos);
+    Serial.print(",");
+    Serial.print(event.orientation.y,4);
+    Serial.print(",");
+    Serial.println(event.orientation.z,4);
+  }
+  for (pos = 160; pos >= 20; pos -= 1)
+  {
+    servo_2.write(pos);
+    //delay(200);
+    sensors_event_t event; 
+    bno.getEvent(&event);
+    Serial.print(pos);
+    Serial.print(",");
+    Serial.print(event.orientation.y,4);
+    Serial.print(",");
+    Serial.println(event.orientation.z,4);
+  }
   lcd_1.setCursor(0, 1);  //将屏幕选中x,y
   lcd_1.print("Testing success");    //打印
-  delay(1000);
+
   //-----------------自检完成-------------------------------
  }

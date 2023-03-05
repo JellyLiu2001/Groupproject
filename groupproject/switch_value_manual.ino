@@ -1,7 +1,11 @@
 //Designed by Jelly Jinzhe Liu ab20328
 void switch_value_manual()
 {
-    
+  while(lcd==2)
+  {
+    lcd_1.clear();
+    lcd=1;
+  }
     digitalWrite(red, 0);
     BUTTON_VALUE_1_B = digitalRead(BUTTON1_M1_BLUE);  //读取按钮blue
     BUTTON_VALUE_2_W = digitalRead(BUTTON2_M1_WHITE);  //读取按钮white

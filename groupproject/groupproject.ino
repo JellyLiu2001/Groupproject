@@ -8,7 +8,6 @@ void setup()  //初始化；
 }
 
 void loop() {
-  Serial.print("hi");
   switch_value = digitalRead(SWITCH);//读取数字针脚的值；
   transfer();//定义舵机范围
   if (switch_value == LOW)  //开关是1

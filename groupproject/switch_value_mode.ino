@@ -7,6 +7,12 @@ void switch_value_mode()
     BUTTON_VALUE_2_W = digitalRead(BUTTON2_M1_WHITE);  //读取按钮white
     BUTTON_VALUE_3_G = digitalRead(BUTTON1_M2_GREEN);  //读取按钮green
     BUTTON_VALUE_4_R = digitalRead(BUTTON2_M2_RED);  //读取按钮red
+    while(lcd==1)
+    {
+      lcd_1.clear();
+      lcd=2;
+    }
+    
     lcd_1.setCursor(0, 0);
     lcd_1.print("white-Autotrim");//自动配平
     lcd_1.setCursor(0, 1);
