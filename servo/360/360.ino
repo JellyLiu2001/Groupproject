@@ -20,7 +20,7 @@ Servo servo_10;
 void setup()
 {
   servo_9.attach(9, 1000, 2500);
-  servo_10.attach(10, 1000, 2500);
+  servo_10.attach(13, 1000, 2500);
 }
 
 void loop()
