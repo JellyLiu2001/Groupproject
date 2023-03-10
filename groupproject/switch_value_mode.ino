@@ -126,9 +126,9 @@ void switch_value_mode() {
         trans = 1;
         stat = stat + 1;
         l[stat] = Serial.parseInt();
-        c = l[0];
-        d = l[1];
-        servo_1.write(c);
+        c = l[0];//等于第一次传回数据
+        d = l[1];//等于第二次传回的数据
+        servo_1.write(c);//改变舵机位置
         servo_2.write(d);
         lcd_1.print(trans);
         lcd_1.setCursor(0, 0);
