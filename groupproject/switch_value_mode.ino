@@ -33,30 +33,20 @@ void switch_value_mode() {
       delay(led_delay);
     }
 
-    lcd_1.setCursor(0, 2);          //显示调整多少角度
-    lcd_1.print("Need to pitch ");  //俯仰
-    lcd_1.print(z_balence);
+    lcd_1.setCursor(0, 2);   //显示调整多少角度
+    lcd_1.print("motor1:");  //俯仰
+    lcd_1.print(c);
     lcd_1.setCursor(0, 3);
-    lcd_1.print("Need to roll ");  //水平
-    lcd_1.print(y_balence);
+    lcd_1.print("motor2: ");  //水平
+    lcd_1.print(d);
     sensors_event_t event;
     bno.getEvent(&event);
-
+    //----------z角度配平-----------------
     while (event.orientation.z >= base_z) {
-      digitalWrite(red, 1);
-      delay(led_delay);
-      digitalWrite(red, 0);
-      delay(led_delay);
-      sensors_event_t event;
-      bno.getEvent(&event);
-      //Serial.println(event.orientation.z);
-      d++;
-      servo_2.write(d);  //设置舵机2旋转角度
-      if (event.orientation.z <= base_z) {
-        break;
-      }
-    }
-    while (event.orientation.z <= base_z) {
+      lcd_1.setCursor(0, 2);
+      lcd_1.print(c);
+      lcd_1.print("|");
+      lcd_1.print(d);
       digitalWrite(red, 1);
       delay(led_delay);
       digitalWrite(red, 0);
@@ -66,11 +56,34 @@ void switch_value_mode() {
       //Serial.println(event.orientation.z);
       d--;
       servo_2.write(d);  //设置舵机2旋转角度
-      if (event.orientation.z >= base_z) {
+      if (event.orientation.z < base_z) {
         break;
       }
     }
+    while (event.orientation.z <= base_z) {
+      lcd_1.setCursor(0, 2);
+      lcd_1.print(c);
+      lcd_1.print("|");
+      lcd_1.print(d);
+      digitalWrite(green, 1);
+      delay(led_delay);
+      digitalWrite(green, 0);
+      delay(led_delay);
+      sensors_event_t event;
+      bno.getEvent(&event);
+      //Serial.println(event.orientation.z);
+      d++;
+      servo_2.write(d);  //设置舵机2旋转角度
+      if (event.orientation.z > base_z) {
+        break;
+      }
+    }
+    //-------------------y角度配平---------------------------
     while (event.orientation.y >= base_y) {
+      lcd_1.setCursor(0, 2);
+      lcd_1.print(c);
+      lcd_1.print("|");
+      lcd_1.print(d);
       digitalWrite(blue, 1);
       delay(led_delay);
       digitalWrite(blue, 0);
@@ -79,29 +92,49 @@ void switch_value_mode() {
       bno.getEvent(&event);
       //Serial.println(event.orientation.y);
       c++;
-      servo_2.write(c);  //设置舵机2旋转角度
-      if (event.orientation.y <= base_y) {
+      servo_1.write(c);  //设置舵机2旋转角度
+      if (event.orientation.y < base_y) {
         break;
       }
     }
     while (event.orientation.y <= base_y) {
+      lcd_1.setCursor(0, 2);
+      lcd_1.print(c);
+      lcd_1.print("|");
+      lcd_1.print(d);
       digitalWrite(blue, 1);
       delay(led_delay);
       digitalWrite(blue, 0);
       delay(led_delay);
       sensors_event_t event;
       bno.getEvent(&event);
-      //Serial.println(event.orientation.y);
       c--;
-      servo_2.write(c);  //设置舵机2旋转角度
-      if (event.orientation.y >= base_y) {
+      servo_1.write(c);  //设置舵机2旋转角度
+      if (event.orientation.y > base_y) {
         break;
       }
     }
-
     delay(1000);
     lcd_1.clear();
-    lcd_1.print("Success");  //显示成功
+    lcd_1.print("Auto Trim Success");  //显示成功
+    for (deg_a = -30; deg_a <= 30; deg_a++) {
+      sensors_event_t event;
+      bno.getEvent(&event);
+      servo_1.write(c + deg_a);
+      degree_1[deg_a + 30] = c + deg_a;
+      gyro_1[deg_a + 30] = event.orientation.y;
+    }
+    for (deg_b = -30; deg_b <= 30; deg_b++) {
+      sensors_event_t event;
+      bno.getEvent(&event);
+      servo_2.write(d + deg_b);
+      degree_2[deg_b + 30] = d + deg_b;
+      gyro_2[deg_b + 30] = event.orientation.z;
+    }
+    servo_1.write(c);
+    servo_2.write(d);
+    lcd_1.clear();
+    lcd_1.print("Servo data saved!");  //显示成功
     delay(1000);
   }
   if (BUTTON_VALUE_1_B == 1)  //blue-----------------自动模式---------------------
@@ -126,9 +159,9 @@ void switch_value_mode() {
         trans = 1;
         stat = stat + 1;
         l[stat] = Serial.parseInt();
-        c = l[0];//等于第一次传回数据
-        d = l[1];//等于第二次传回的数据
-        servo_1.write(c);//改变舵机位置
+        c = l[0];          //等于第一次传回数据
+        d = l[1];          //等于第二次传回的数据
+        servo_1.write(c);  //改变舵机位置
         servo_2.write(d);
         lcd_1.print(trans);
         lcd_1.setCursor(0, 0);

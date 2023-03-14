@@ -15,8 +15,8 @@ Motor:20度为0 - 190
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
-int base_y = 0;  //设置基准角度
-int base_z = 0;
+float base_y = 2.8;  //设置基准角度
+float base_z = 169;
 
 //-----screen-----
 #include <Wire.h>
@@ -28,13 +28,11 @@ int lcd = 1;
 #include <Servo.h>
 int pre_deg_c, current_c = 0;
 int current_d, pre_deg_d = 0;
-int a = 70;  //定义旋转角度后c,d
-int b = 70;
 Servo servo_1;  //声明舵机
 Servo servo_2;  //声明舵机2
 //校准舵机角度
-int c = a + 20;  //舵机20为0度
-int d = b + 20;
+int c = 90;  //舵机20为0度
+int d = 90;
 int i;
 //---led---
 int green = 11;
@@ -55,11 +53,16 @@ int BUTTON2_M2_RED = 3;                                                      //r
 //配平角度
 int ydeg, zdeg;
 int y_balence, z_balence;
-//-------------给陈彦博的----------------
-int connect = 1;   //发送信号1代表连接成功
-int l[2];//接收角度的列表
-int stat = -1;//在列表中0,1的切换
-int trans = 0;  //传输监测
+//-------------自动配平----------------
+int connect = 1;  //发送信号1代表连接成功
+int l[2];         //接收角度的列表
+int stat = -1;    //在列表中0,1的切换
+int trans = 0;    //传输监测
+int degree_1[70];//定义舵机1的角度
+int degree_2[70];//定义舵机2的角度
+int gyro_1[70];//记录舵机1的gyro数据
+int gyro_2[70];//记录舵机2的gyro数据
+int deg_a,deg_b;//设置舵机循环范围
 //-------------打包-------
 void transfer();   //数字变换
 void selfcheck();  //自检
