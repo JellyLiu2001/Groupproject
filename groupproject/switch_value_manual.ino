@@ -27,11 +27,11 @@ void switch_value_manual() {
     sensors_event_t event;
     bno.getEvent(&event);
     lcd_1.setCursor(12, 0);
-    lcd_1.print(event.orientation.x, 0);  //航向
+    lcd_1.print(event.orientation.x, 4);  //航向
     lcd_1.setCursor(12, 1);
-    lcd_1.print(event.orientation.y, 0);  //水平
+    lcd_1.print(event.orientation.y, 4);  //水平
     lcd_1.setCursor(12, 2);
-    lcd_1.print(event.orientation.z, 0);  //俯仰
+    lcd_1.print(event.orientation.z, 4);  //俯仰
   }
 
   //---------------------------------------------------------按钮---------------------------------------

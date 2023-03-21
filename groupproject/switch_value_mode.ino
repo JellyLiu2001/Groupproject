@@ -20,7 +20,6 @@ void switch_value_mode() {
   lcd_1.setCursor(0, 3);
   lcd_1.print("Green-information");  //实时显示角度
 
-
   if (BUTTON_VALUE_2_W == 1)  //white-----------------自动配平---------------------
   {
     gyro_loop();
@@ -39,105 +38,14 @@ void switch_value_mode() {
     lcd_1.setCursor(0, 3);
     lcd_1.print("motor2: ");  //水平
     lcd_1.print(d);
-    sensors_event_t event;
-    bno.getEvent(&event);
-    //----------z角度配平-----------------
-    while (event.orientation.z >= base_z) {
-      lcd_1.setCursor(0, 2);
-      lcd_1.print(c);
-      lcd_1.print("|");
-      lcd_1.print(d);
-      digitalWrite(red, 1);
-      delay(led_delay);
-      digitalWrite(red, 0);
-      delay(led_delay);
-      sensors_event_t event;
-      bno.getEvent(&event);
-      //Serial.println(event.orientation.z);
-      d--;
-      servo_2.write(d);  //设置舵机2旋转角度
-      if (event.orientation.z < base_z) {
-        break;
-      }
-    }
-    while (event.orientation.z <= base_z) {
-      lcd_1.setCursor(0, 2);
-      lcd_1.print(c);
-      lcd_1.print("|");
-      lcd_1.print(d);
-      digitalWrite(green, 1);
-      delay(led_delay);
-      digitalWrite(green, 0);
-      delay(led_delay);
-      sensors_event_t event;
-      bno.getEvent(&event);
-      //Serial.println(event.orientation.z);
-      d++;
-      servo_2.write(d);  //设置舵机2旋转角度
-      if (event.orientation.z > base_z) {
-        break;
-      }
-    }
-    //-------------------y角度配平---------------------------
-    while (event.orientation.y >= base_y) {
-      lcd_1.setCursor(0, 2);
-      lcd_1.print(c);
-      lcd_1.print("|");
-      lcd_1.print(d);
-      digitalWrite(blue, 1);
-      delay(led_delay);
-      digitalWrite(blue, 0);
-      delay(led_delay);
-      sensors_event_t event;
-      bno.getEvent(&event);
-      //Serial.println(event.orientation.y);
-      c++;
-      servo_1.write(c);  //设置舵机2旋转角度
-      if (event.orientation.y < base_y) {
-        break;
-      }
-    }
-    while (event.orientation.y <= base_y) {
-      lcd_1.setCursor(0, 2);
-      lcd_1.print(c);
-      lcd_1.print("|");
-      lcd_1.print(d);
-      digitalWrite(blue, 1);
-      delay(led_delay);
-      digitalWrite(blue, 0);
-      delay(led_delay);
-      sensors_event_t event;
-      bno.getEvent(&event);
-      c--;
-      servo_1.write(c);  //设置舵机2旋转角度
-      if (event.orientation.y > base_y) {
-        break;
-      }
-    }
-    delay(1000);
-    lcd_1.clear();
-    lcd_1.print("Auto Trim Success");  //显示成功
-    for (deg_a = -30; deg_a <= 30; deg_a++) {
-      sensors_event_t event;
-      bno.getEvent(&event);
-      servo_1.write(c + deg_a);
-      degree_1[deg_a + 30] = c + deg_a;
-      gyro_1[deg_a + 30] = event.orientation.y;
-    }
-    for (deg_b = -30; deg_b <= 30; deg_b++) {
-      sensors_event_t event;
-      bno.getEvent(&event);
-      servo_2.write(d + deg_b);
-      degree_2[deg_b + 30] = d + deg_b;
-      gyro_2[deg_b + 30] = event.orientation.z;
-    }
-    servo_1.write(c);
-    servo_2.write(d);
+
+    gyro_trim();
     lcd_1.clear();
     lcd_1.print("Servo data saved!");  //显示成功
     delay(1000);
+    lcd_1.clear();
   }
-  if (BUTTON_VALUE_1_B == 1)  //blue-----------------自动模式---------------------
+  if (BUTTON_VALUE_1_B == 1)  //blue-----------------自动模式---------------------cyb
   {
     lcd_1.clear();
     lcd_1.setCursor(0, 0);
@@ -158,25 +66,34 @@ void switch_value_mode() {
       {
         trans = 1;
         stat = stat + 1;
-        l[stat] = Serial.parseInt();
-        c = l[0];          //等于第一次传回数据
-        d = l[1];          //等于第二次传回的数据
-        servo_1.write(c);  //改变舵机位置
-        servo_2.write(d);
-        lcd_1.print(trans);
-        lcd_1.setCursor(0, 0);
-        lcd_1.clear();
-        lcd_1.print("motor1:");
-        lcd_1.print(l[0]);
-        lcd_1.print("|");
-        lcd_1.setCursor(0, 1);
-        lcd_1.print("motor2:");
-        lcd_1.print(l[1]);
-        lcd_1.print("|");
-        lcd_1.setCursor(0, 2);
-        lcd_1.print("current status:");
-        lcd_1.print(stat + 1);
-        if (stat == 1) { stat = -1; }
+        // l[stat] = Serial.parseInt();
+        // c = l[0];  //等于第一次传回数据
+        // d = l[1];  //等于第二次传回的数据
+        num = Serial.parseInt();
+        Serial.flush();
+        // Serial.println(num);
+        if (num != 0) {
+          c = num / 1000;
+          // Serial.println(c);
+          d = num % 1000;
+          // Serial.println(d);
+          lcd_1.print(trans);
+          lcd_1.setCursor(0, 0);
+          lcd_1.clear();
+          lcd_1.print("motor1:");
+          lcd_1.print(c);
+          lcd_1.print("|");
+          lcd_1.setCursor(0, 1);
+          lcd_1.print("motor2:");
+          lcd_1.print(d);
+          lcd_1.print("|");
+          lcd_1.setCursor(0, 2);
+          lcd_1.print("current status:");
+          lcd_1.print(stat + 1);
+          servo_1.write(c);  //改变舵机位置
+          servo_2.write(d);
+          if (stat == 1) { stat = -1; }
+        }
       }
       trans = 0;
       lcd_1.setCursor(0, 3);

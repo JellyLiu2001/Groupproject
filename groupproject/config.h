@@ -15,8 +15,8 @@ Motor:20度为0 - 190
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
-float base_y = 2.8;  //设置基准角度
-float base_z = 169;
+float base_y = 0.4375;  //设置基准角度
+float base_z = 176.5;
 
 //-----screen-----
 #include <Wire.h>
@@ -31,6 +31,7 @@ int current_d, pre_deg_d = 0;
 Servo servo_1;  //声明舵机
 Servo servo_2;  //声明舵机2
 //校准舵机角度
+long num = 0;
 int c = 90;  //舵机20为0度
 int d = 90;
 int i;
@@ -68,6 +69,7 @@ void transfer();   //数字变换
 void selfcheck();  //自检
 void gyro_setup();
 void gyro_loop();
+void gyro_trim();
 void init_setup();
 void switch_value_manual();
 void switch_value_mode();
