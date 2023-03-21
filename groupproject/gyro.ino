@@ -31,12 +31,12 @@ void gyro_loop() {
   //y配平-----------------------
   y_balence = 2 - ydeg;
 }
-void gyro_trim() {
+void gyro_trim() { 
   sensors_event_t event;
   bno.getEvent(&event);
   //----------z角度配平-----------------
   while (event.orientation.z >= base_z) {
-    lcd_1.setCursor(0, 0);
+    lcd_1.setCursor(0, 1);
     lcd_1.print(c);
     lcd_1.print("|");
     lcd_1.print(d);
@@ -54,7 +54,7 @@ void gyro_trim() {
     }
   }
   while (event.orientation.z <= base_z) {
-    lcd_1.setCursor(0, 0);
+    lcd_1.setCursor(0, 1);
     lcd_1.print(c);
     lcd_1.print("|");
     lcd_1.print(d);
@@ -73,7 +73,7 @@ void gyro_trim() {
   }
   //-------------------y角度配平---------------------------
   while (event.orientation.y >= base_y) {
-    lcd_1.setCursor(0, 0);
+    lcd_1.setCursor(0, 1);
     lcd_1.print(c);
     lcd_1.print("|");
     lcd_1.print(d);
@@ -92,7 +92,7 @@ void gyro_trim() {
     }
   }
   while (event.orientation.y <= base_y) {
-    lcd_1.setCursor(0, 0);
+    lcd_1.setCursor(0, 1);
     lcd_1.print(c);
     lcd_1.print("|");
     lcd_1.print(d);

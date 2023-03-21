@@ -62,12 +62,62 @@ int trans = 0;    //传输监测
 int degree_1[70];//定义舵机1的角度
 int degree_2[70];//定义舵机2的角度
 int deg_a,deg_b;//设置舵机循环范围
-//-------------打包-------
-void transfer();   //数字变换
-void selfcheck();  //自检
-void gyro_setup();
-void gyro_loop();
-void gyro_trim();
-void init_setup();
-void switch_value_manual();
-void switch_value_mode();
+void setup() {
+  Serial.begin(9600);
+  lcd_1.init();  // initialize the lcd
+  lcd_1.backlight();
+  lcd_1.begin(20, 3);      //设定lcd行数
+  pinMode(SWITCH, INPUT);  //定义SWTICH为输出模式；
+  pinMode(green, OUTPUT);
+  pinMode(blue, OUTPUT);
+  pinMode(red, OUTPUT);
+  servo_1.attach(9);   //设定舵机接口
+  servo_2.attach(10);  //设定舵机接口
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------------------
+void loop(){
+while (connect == 1)  //与其他建立连接
+{
+
+  digitalWrite(green, 1);
+  while (Serial.available() > 0)  //当有信号的时候
+  {
+    trans = 1;
+    stat = stat + 1;
+    // l[stat] = Serial.parseInt();
+    // c = l[0];  //等于第一次传回数据
+    // d = l[1];  //等于第二次传回的数据
+    num = Serial.parseInt();
+    Serial.flush();
+    // Serial.println(num);
+    if (num != 0) {
+      c = num / 1000;
+      // Serial.println(c);
+      d = num % 1000;
+      // Serial.println(d);
+      lcd_1.print(trans);
+      lcd_1.setCursor(0, 0);
+      lcd_1.clear();
+      lcd_1.print("motor1:");
+      lcd_1.print(c);
+      lcd_1.print("|");
+      lcd_1.setCursor(0, 1);
+      lcd_1.print("motor2:");
+      lcd_1.print(d);
+      lcd_1.print("|");
+      lcd_1.setCursor(0, 2);
+      lcd_1.print("current status:");
+      lcd_1.print(stat + 1);
+      servo_1.write(c);  //改变舵机位置
+      servo_2.write(d);
+      if (stat == 1) { stat = -1; }
+    }
+  }
+  trans = 0;
+  lcd_1.setCursor(0, 3);
+  lcd_1.print("Trans:");
+  lcd_1.print(trans);
+}
+}
