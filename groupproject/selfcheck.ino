@@ -1,13 +1,13 @@
 //Designed by Jelly Jinzhe Liu ab20328
 void selfcheck() {
-  //------------------自检-------------------------
-  lcd_1.setCursor(0, 0);                //将屏幕选中x,y
-  lcd_1.print("Welcome");               //打印
-  lcd_1.setCursor(0, 1);                //将屏幕选中x,y
-  lcd_1.print("Selftesting");           //打印
-  lcd_1.setCursor(0, 2);                //将屏幕选中x,y
-  lcd_1.print("Design by Jinzhe Liu");  //打印
-  for (i = 0; i <= 2; i++)              //RGB闪三下
+  //------------------Self-checking-------------------------
+  lcd_1.setCursor(0, 0);                //Select the location of the screen
+  lcd_1.print("Welcome");               //Print
+  lcd_1.setCursor(0, 1);                //Select the location of the screen
+  lcd_1.print("Selftesting");           //Print
+  lcd_1.setCursor(0, 2);                //Select the location of the screen
+  lcd_1.print("Design by Jinzhe Liu");  //Print
+  for (i = 0; i <= 2; i++)              //RGB flashes three times
   {
     digitalWrite(red, 1);
     digitalWrite(green, 1);
@@ -19,8 +19,8 @@ void selfcheck() {
     delay(led_delay);
   }
 
-  lcd_1.setCursor(0, 1);           //将屏幕选中x,y
-  lcd_1.print("Testing success");  //打印
+  lcd_1.setCursor(0, 1);           //Select the location of the screen
+  lcd_1.print("Testing success");  //Print
 
-  //-----------------自检完成-------------------------------
+  //-----------------Self-checking completed-------------------------------
 }

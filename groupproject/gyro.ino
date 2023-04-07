@@ -1,4 +1,6 @@
 //Designed by Jelly Jinzhe Liu ab20328
+
+//Gyroscope setup
 void gyro_setup() {
   if (!bno.begin()) {
     /* There was a problem detecting the BNO055 ... check your connections */
@@ -6,36 +8,37 @@ void gyro_setup() {
     while (1)
       ;
   }
-
   delay(1000);
-
   bno.setExtCrystalUse(true);
 }
-//----------------------------------自动配平-----------------------------------------------
-void gyro_loop() {
-  digitalWrite(red, 0);
-  sensors_event_t event;
-  bno.getEvent(&event);
-  ydeg = (event.orientation.y);
-  zdeg = (event.orientation.z);
-  delay(100);
-  lcd_1.clear();
-  lcd_1.print("Runing trim......");
 
-  //z配平-------------------
+//Gyroscope loop
+void gyro_display() {
+  digitalWrite(red, 0);          //Turn off the red LED
+  sensors_event_t event;         //Create a sensor event object that provides information about the sensor event, including the raw sensor data, the event type that triggered the sensor, the precise data, and the time the event occurred.
+  bno.getEvent(&event);          //Get gyroscope parameters
+  ydeg = (event.orientation.y);  //Get y-axis information
+  zdeg = (event.orientation.z);  //Get z-axis information
+  delay(100);
+  lcd_1.clear();  //Clear the screen
+  lcd_1.print("Running trim......");
+
+  //Z-axis trim calculation to display on the screen
   if (zdeg >= 0) {
     z_balence = 173 - zdeg;
   } else if (zdeg < 0) {
     z_balence = 173 + zdeg;
   }
-  //y配平-----------------------
+  //Y-axis trim calculation
   y_balence = 2 - ydeg;
 }
-void gyro_trim() { 
+
+//Gyroscope trim using numerical values
+void gyro_trim() {  //use the number of the trim
   sensors_event_t event;
   bno.getEvent(&event);
-  //----------z角度配平-----------------
-  while (event.orientation.z >= base_z) {
+  //----------z-axis angle trim-----------------
+  while (event.orientation.z >= base_z) {  //when the gyro angle is greater than the set angle
     lcd_1.setCursor(0, 1);
     lcd_1.print(c);
     lcd_1.print("|");
@@ -43,17 +46,17 @@ void gyro_trim() {
     digitalWrite(red, 1);
     delay(led_delay);
     digitalWrite(red, 0);
-    delay(led_delay);
+    delay(led_delay);  //display the angle information and blink the red LED
     sensors_event_t event;
     bno.getEvent(&event);
     //Serial.println(event.orientation.z);
-    d--;
-    servo_2.write(d);  //设置舵机2旋转角度
+    d--;               //reduce the angle of d
+    servo_2.write(d);  //set the rotation angle of servo 2
     if (event.orientation.z < base_z) {
       break;
     }
   }
-  while (event.orientation.z <= base_z) {
+  while (event.orientation.z <= base_z) {  //when the gyro angle is less than the set angle
     lcd_1.setCursor(0, 1);
     lcd_1.print(c);
     lcd_1.print("|");
@@ -65,13 +68,13 @@ void gyro_trim() {
     sensors_event_t event;
     bno.getEvent(&event);
     //Serial.println(event.orientation.z);
-    d++;
-    servo_2.write(d);  //设置舵机2旋转角度
+    d++;               //increase the angle of d
+    servo_2.write(d);  //set the rotation angle of servo 2
     if (event.orientation.z > base_z) {
       break;
     }
   }
-  //-------------------y角度配平---------------------------
+  //-------------------y-axis angle trim---------------------------
   while (event.orientation.y >= base_y) {
     lcd_1.setCursor(0, 1);
     lcd_1.print(c);
@@ -86,7 +89,7 @@ void gyro_trim() {
     Serial.print(base_y);
     //Serial.println(event.orientation.y);
     c++;
-    servo_1.write(c);  //设置舵机2旋转角度
+    servo_1.write(c);  //set the rotation angle of servo 1
     if (event.orientation.y < base_y) {
       break;
     }
@@ -103,33 +106,12 @@ void gyro_trim() {
     sensors_event_t event;
     bno.getEvent(&event);
     c--;
-    servo_1.write(c);  //设置舵机2旋转角度
+    servo_1.write(c);  //set the rotation angle of servo 1
     if (event.orientation.y > base_y) {
       break;
     }
   }
   delay(1000);
   lcd_1.clear();
-  lcd_1.print("Auto Trim Success");  //显示成功
-                                     /*
-    for (deg_a = -30; deg_a <= 30; deg_a++) {
-      sensors_event_t event;
-      bno.getEvent(&event);
-      servo_1.write(c + deg_a);
-      degree_1[deg_a + 30] = c + deg_a;
-      gyro_1[deg_a + 30] = event.orientation.y;
-      delay(100);
-      
-    }
-    for (deg_b = -30; deg_b <= 30; deg_b++) {
-      sensors_event_t event;
-      bno.getEvent(&event);
-      servo_2.write(d + deg_b);
-      degree_2[deg_b + 30] = d + deg_b;
-      gyro_2[deg_b + 30] = event.orientation.z;
-      delay(100);
-    }
-    servo_1.write(c);
-    servo_2.write(d);
-    */
+  lcd_1.print("Auto Trim Success");  //display success
 }

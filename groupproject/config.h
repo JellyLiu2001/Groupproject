@@ -8,66 +8,67 @@ Button:2:3:5:6
 Switch:4
 Motor:9:10
 Screen:sda:scl 0x27
-Motor:20度为0 - 190
+Motor:20 degrees = 0 - 190
 */
+//EEPROM
+
 //---------gyro-----------
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
-float base_y = 0.4375;  //设置基准角度
-float base_z = 176.5;
+float base_y = -0.375;  // Set the base angle for the gyroscope
+float base_z = 175.937;
 
 //-----screen-----
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd_1(0x27, 20, 3);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd_1(0x27, 20, 3);  // Set the LCD address to 0x27 for a 20-character and 4-line display
 int lcd = 1;
 
-//---舵机---
+//---servo---
 #include <Servo.h>
-int pre_deg_c, current_c = 0;
+int pre_deg_c, current_c = 0;  // Compare the current data with the previous data on the screen and refresh the screen if there is a change
 int current_d, pre_deg_d = 0;
-Servo servo_1;  //声明舵机
-Servo servo_2;  //声明舵机2
-//校准舵机角度
+Servo servo_1;  // Declare servo 1
+Servo servo_2;  // Declare servo 2
+// Calibrate the servo angle
 long num = 0;
-int c = 90;  //舵机20为0度
+int c = 90;  // Servo 20 degrees = 0 degrees
 int d = 90;
-int i;
+int i;  //used for "for" function
 //---led---
 int green = 11;
 int blue = 12;
 int red = 13;
 int led_delay = 100;
-//---按钮---
-int switch_value = 0;                                                        //声明变量，用来存储按钮返回值HIGH或者LOW；
-const int SWITCH = 4;                                                        //声明变量，开关接在第6针脚；
-int BUTTON_VALUE_1_B, BUTTON_VALUE_2_W, BUTTON_VALUE_3_G, BUTTON_VALUE_4_R;  //声明按键状态
-                                                                             //motor1
-int BUTTON1_M1_BLUE = 5;                                                     //blue
-int BUTTON2_M1_WHITE = 6;                                                    //white
-                                                                             //motor2
-int BUTTON1_M2_GREEN = 2;                                                    //green
-int BUTTON2_M2_RED = 3;                                                      //red
+//---button---
+int switch_value = 0;                                                        // Declare a variable to store the button return value HIGH or LOW;
+const int SWITCH = 4;                                                        // Declare variable, switch connected to pin 6;
+int BUTTON_VALUE_1_B, BUTTON_VALUE_2_W, BUTTON_VALUE_3_G, BUTTON_VALUE_4_R;  // Declare button status
+// motor1
+int BUTTON1_M1_BLUE = 5;   // Blue
+int BUTTON2_M1_WHITE = 6;  // White
+// motor2
+int BUTTON1_M2_GREEN = 2;  // Green
+int BUTTON2_M2_RED = 3;    // Red
 
-//配平角度
-int ydeg, zdeg;
-int y_balence, z_balence;
-//-------------自动配平----------------
-int connect = 1;  //发送信号1代表连接成功
-int l[2];         //接收角度的列表
-int stat = -1;    //在列表中0,1的切换
-int trans = 0;    //传输监测
-int degree_1[70];//定义舵机1的角度
-int degree_2[70];//定义舵机2的角度
-int deg_a,deg_b;//设置舵机循环范围
-//-------------打包-------
-void transfer();   //数字变换
-void selfcheck();  //自检
-void gyro_setup();
-void gyro_loop();
-void gyro_trim();
-void init_setup();
-void switch_value_manual();
-void switch_value_mode();
+// Balancing angle
+int ydeg, zdeg;            // Store gyroscope input data
+int y_balence, z_balence;  // Used to display the angle that needs to be balanced on the screen
+//-------------Auto-balancing----------------
+int connect = 1;   // Signal 1 means connection successful
+int l[2];          // List of received angles
+int stat = -1;     // Switch between 0 and 1 in the list
+int trans = 0;     // Transmission monitoring
+int deg_1, deg_2;  // Save the completed balancing data
+int T_1, T_2 = 0;  // Compare the transmitted data with the balancing data
+//-------------Pack-------
+void transfer();             // Digital conversion
+void selfcheck();            // Self-check
+void gyro_setup();           // Gyroscope initialization
+void gyro_display();         // Display gyroscope data on the screen
+void gyro_trim();            // Gyroscope code when using auto-balancing
+void init_setup();           // Initialize arduino code
+void switch_value_manual();  // Manual mode
+void switch_value_mode();    // Auto mode
