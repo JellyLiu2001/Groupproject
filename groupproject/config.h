@@ -56,7 +56,7 @@ int BUTTON2_M2_RED = 3;    // Red
 // Balancing angle
 int ydeg, zdeg;            // Store gyroscope input data
 int y_balence, z_balence;  // Used to display the angle that needs to be balanced on the screen
-//-------------Auto-balancing----------------
+//-------------Auto----------------PC
 int connect = 1;   // Signal 1 means connection successful
 int l[2];          // List of received angles
 int stat = -1;     // Switch between 0 and 1 in the list

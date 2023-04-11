@@ -1,5 +1,5 @@
 //Designed by Jelly Jinzhe Liu ab20328
-void transfer() {//Limit the angle of the gyroscope to prevent damage due to excessive angles
+void transfer() {//Limit the angle of the motor to prevent damage due to excessive angles
   if (c >= 160) {
     c = 160;
   }

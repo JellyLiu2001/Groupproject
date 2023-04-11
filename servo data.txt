@@ -1,7 +1,0 @@
-operating voltage 6-7.2v
-Maximum angle: 180
-temperature range 0-55
-torsional moment 12kg cm at(6v)
-		13kg cm at(7.2v)
-operating speed 0.16sec/60 deg(6v)
-operating speed: 0.14sec/60deg(7.2)

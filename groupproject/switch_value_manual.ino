@@ -1,6 +1,6 @@
 //Designed by Jelly Jinzhe Liu ab20328
 void switch_value_manual() {
-  while (lcd == 2) {
+  while (lcd == 2) {//需要修改
     lcd_1.clear();
     lcd = 1;
   }
